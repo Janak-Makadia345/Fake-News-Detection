@@ -5,7 +5,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report
 
 # Function to preprocess text data
 def preprocess_text(text):
@@ -73,7 +73,7 @@ def main():
     plt.xlabel('Label')
     plt.ylabel('Count')
     plt.title('Label Distribution')
-    st.pyplot()
+    st.pyplot(plt)
 
 if __name__ == '__main__':
     main()
