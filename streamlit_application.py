@@ -66,13 +66,12 @@ def main():
     st.write('Classification Report:')
     st.write(report)
 
-    # Plot histogram
-    st.subheader('Histogram of Label Distribution')
-    plt.figure(figsize=(8, 6))
-    sns.histplot(data['label'])
-    plt.xlabel('Label')
-    plt.ylabel('Count')
-    plt.title('Label Distribution')
+    # Plot histograms
+    st.subheader('Histogram of Label Distribution by Number of Characters')
+    g = sns.FacetGrid(data, col="label", height=6)
+    g.map(sns.histplot, 'num_character', bins=20, palette=['red', 'green'])
+    g.set_axis_labels('Number of Characters', 'Count')
+    g.set_titles('{col_name}')
     st.pyplot(plt)
 
 if __name__ == '__main__':
