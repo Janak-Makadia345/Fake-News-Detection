@@ -22,8 +22,7 @@ def evaluate_model(model, X_test_tfidf, y_test):
     lr_pred = model.predict(X_test_tfidf)
     accuracy = accuracy_score(y_test, lr_pred)
     report = classification_report(y_test, lr_pred)
-    cm = confusion_matrix(y_test, lr_pred)
-    return accuracy, report, cm
+    return accuracy, report
 
 # Main Streamlit app
 def main():
@@ -59,7 +58,7 @@ def main():
     lr_model = train_model(X_train_tfidf, y_train)
 
     # Evaluate the model
-    accuracy, report, cm = evaluate_model(lr_model, X_test_tfidf, y_test)
+    accuracy, report = evaluate_model(lr_model, X_test_tfidf, y_test)
 
     # Display results
     st.subheader('Model Evaluation')
@@ -67,13 +66,13 @@ def main():
     st.write('Classification Report:')
     st.write(report)
 
-    # Plot confusion matrix
-    st.subheader('Confusion Matrix')
+    # Plot histogram
+    st.subheader('Histogram of Label Distribution')
     plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, annot_kws={'size': 14})
-    plt.xlabel('Predicted labels')
-    plt.ylabel('True labels')
-    plt.title('Confusion Matrix')
+    sns.histplot(data['label'])
+    plt.xlabel('Label')
+    plt.ylabel('Count')
+    plt.title('Label Distribution')
     st.pyplot()
 
 if __name__ == '__main__':
