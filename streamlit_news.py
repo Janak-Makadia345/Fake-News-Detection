@@ -1,28 +1,7 @@
-import streamlit as st
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
-
-# Load the data
+# Load data
 @st.cache
 def load_data():
     return pd.read_csv('WELFake_Dataset.csv')
-
-
-# Preprocess the data
-def preprocess_data(data):
-    data = data.dropna()
-    return data
-
-# Train the model
-def train_model(X_train, y_train):
-    vectorizer = TfidfVectorizer()
-    X_train_tfidf = vectorizer.fit_transform(X_train)
-    lr_model = LogisticRegression()
-    lr_model.fit(X_train_tfidf, y_train)
-    return lr_model, vectorizer
 
 # Main function
 def main():
@@ -32,9 +11,12 @@ def main():
     data = load_data()
     data = preprocess_data(data)
 
+    # Check column names
+    st.write("Column Names:", data.columns)  # Print column names to check the correct name
+
     # Split data
     X = data['title'] + ' ' + data['text']
-    y = data['Label']
+    y = data['your_actual_column_name']  # Adjust this with the correct column name
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Train model
@@ -64,5 +46,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
-
