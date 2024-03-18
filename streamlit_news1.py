@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load the data
-@st.cache
+@st.cache_resource
 def load_data():
     return pd.read_csv('WELFake_Dataset.csv')
 
@@ -70,5 +70,5 @@ def main():
         accuracy = accuracy_score(y_test, rf_pred)
         st.write(f"Accuracy: {accuracy}")
 
-if _name_ == "_main_":
-    main()
+if __name__ == "__main__":
+    main()
