@@ -31,7 +31,9 @@ def main():
     data = load_data()
     data = preprocess_data(data)
 
-    # Check column names
+    # Display first few rows and column names
+    st.write("Data Preview:")
+    st.write(data.head())  # Display first few rows of DataFrame
     st.write("Column Names:", data.columns)  # Print column names to check the correct name
 
     # Split data
