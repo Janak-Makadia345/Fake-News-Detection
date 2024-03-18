@@ -8,7 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load the data
-@st.cache
+@st.cache_resource
+@st.cache_data
 def load_data():
     return pd.read_csv('WELFake_Dataset.csv')
 
