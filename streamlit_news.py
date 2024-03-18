@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load the data
-@st.cache
+@st.cache_resource
 def load_data():
     return pd.read_csv('WELFake_Dataset.csv')
 
@@ -38,7 +38,7 @@ def main():
 
     # Split data
     X = data['title'] + ' ' + data['text']
-    y = data['Label']  # Use the correct column name for the target variable
+    y = data['label']  # Use the correct column name for the target variable
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Train model
@@ -52,9 +52,9 @@ def main():
         input_tfidf = vectorizer.transform([input_text.lower()])
         prediction = model.predict(input_tfidf)
         if prediction == 1:
-            st.write("Predicted Label: Fake News")
+            st.write("Predicted label: Fake News")
         else:
-            st.write("Predicted Label: Not Fake News")
+            st.write("Predicted label: Not Fake News")
 
     # Evaluation
     st.subheader("Model Evaluation")
