@@ -52,9 +52,9 @@ def main():
         input_tfidf = vectorizer.transform([input_text.lower()])
         prediction = model.predict(input_tfidf)
         if prediction == 1:
-            st.write("Predicted label: Fake News")
+            st.write("Predicted label:no Fake News")
         else:
-            st.write("Predicted label: Not Fake News")
+            st.write("Predicted label:Fake News")
 
     # Evaluation
     st.subheader("Model Evaluation")
