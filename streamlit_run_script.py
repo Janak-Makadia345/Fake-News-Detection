@@ -58,7 +58,7 @@ def main():
         X_test_tfidf = vectorizer.transform(X_test)
         lr_pred = model.predict(X_test_tfidf)
         accuracy = accuracy_score(y_test, lr_pred)
-        st.write(f"Accuracy: {accuracy}")
+        st.write(f"Model's Accuracy: {accuracy}")
         
 
 if __name__ == "__main__":
