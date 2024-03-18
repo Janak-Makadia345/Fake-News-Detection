@@ -47,10 +47,8 @@ def main():
     if st.button("Classify"):
         input_tfidf = vectorizer.transform([input_text.lower()])
         prediction = model.predict(input_tfidf)
-
         if prediction == 1:
             st.write("Predicted label:not Fake News")
-
         else:
             st.write("Predicted label:Fake News")
 
@@ -60,9 +58,8 @@ def main():
         X_test_tfidf = vectorizer.transform(X_test)
         lr_pred = model.predict(X_test_tfidf)
         accuracy = accuracy_score(y_test, lr_pred)
-        report = classification_report(y_test, lr_pred)
         st.write(f"Accuracy: {accuracy}")
-        st.write(f"Classification Report:\n{report}")
+        
 
 if __name__ == "__main__":
     main()
