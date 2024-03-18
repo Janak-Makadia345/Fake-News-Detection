@@ -1,79 +1,68 @@
 import streamlit as st
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
-# Function to load and preprocess the data
+# Load the data
+@st.cache_resource
 def load_data():
-    data = pd.read_csv('WELFake_Dataset.csv').dropna()
-    X = data['title'] + ' ' + data['text']
-    y = data['label']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    return X_train, X_test, y_train, y_test
+    return pd.read_csv('WELFake_Dataset.csv')
 
-# Function to preprocess text data
-def preprocess_text(X_train, X_test):
-    X_train_lower = [text.lower() for text in X_train]
-    X_test_lower = [text.lower() for text in X_test]
+# Preprocess the data
+def preprocess_data(data):
+    data = data.dropna()
+    return data
+
+# Train the model
+def train_model(X_train, y_train):
     vectorizer = TfidfVectorizer()
-    X_train_tfidf = vectorizer.fit_transform(X_train_lower)
-    X_test_tfidf = vectorizer.transform(X_test_lower)
-    return X_train_tfidf, X_test_tfidf
-
-# Function to train Logistic Regression model
-def train_logistic_regression(X_train, y_train):
+    X_train_tfidf = vectorizer.fit_transform(X_train)
     lr_model = LogisticRegression()
-    lr_model.fit(X_train, y_train)
-    return lr_model
-
-# Function to train Random Forest model
-def train_random_forest(X_train, y_train):
-    rf_model = RandomForestClassifier()
-    rf_model.fit(X_train, y_train)
-    return rf_model
-
-# Function to train SVM model
-def train_svm(X_train, y_train):
-    svm_model = SVC()
-    svm_model.fit(X_train, y_train)
-    return svm_model
+    lr_model.fit(X_train_tfidf, y_train)
+    return lr_model, vectorizer
 
 # Main function
 def main():
     st.title("Fake News Detection")
-
+    
     # Load data
-    X_train, X_test, y_train, y_test = load_data()
+    data = load_data()
+    data = preprocess_data(data)
 
-    # Preprocess text data
-    X_train_tfidf, X_test_tfidf = preprocess_text(X_train, X_test)
+    
+    # Split data
+    X = data['title'] + ' ' + data['text']
+    y = data['label']  # Use the correct column name for the target variable
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Train model
+    model_type = st.sidebar.selectbox("Select Model", ["Logistic Regression"])  # Add more models as needed
+    if model_type == "Logistic Regression":
+        model, vectorizer = train_model(X_train, y_train)
+    
+    # User input
+    input_text = st.text_input("Enter news text:")
+    if st.button("Classify"):
+        input_tfidf = vectorizer.transform([input_text.lower()])
+        prediction = model.predict(input_tfidf)
 
-    # Train models
-    lr_model = train_logistic_regression(X_train_tfidf, y_train)
-    rf_model = train_random_forest(X_train_tfidf, y_train)
-    svm_model = train_svm(X_train_tfidf, y_train)
+        if prediction == 1:
+            st.write("Predicted label:not Fake News")
 
-    # Evaluate models
-    lr_pred = lr_model.predict(X_test_tfidf)
-    rf_pred = rf_model.predict(X_test_tfidf)
-    svm_pred = svm_model.predict(X_test_tfidf)
+        else:
+            st.write("Predicted label:Fake News")
 
-    # Display results
-    st.subheader("Logistic Regression Model:")
-    st.write("Accuracy:", accuracy_score(y_test, lr_pred))
-    st.write("Classification Report:\n", classification_report(y_test, lr_pred))
-
-    st.subheader("Random Forest Model:")
-    st.write("Accuracy:", accuracy_score(y_test, rf_pred))
-    st.write("Classification Report:\n", classification_report(y_test, rf_pred))
-
-    st.subheader("Support Vector Machine (SVM) Model:")
-    st.write("Accuracy:", accuracy_score(y_test, svm_pred))
-    st.write("Classification Report:\n", classification_report(y_test, svm_pred))
+    # Evaluation
+    st.subheader("Model Evaluation")
+    if model_type == "Logistic Regression":
+        X_test_tfidf = vectorizer.transform(X_test)
+        lr_pred = model.predict(X_test_tfidf)
+        accuracy = accuracy_score(y_test, lr_pred)
+        report = classification_report(y_test, lr_pred)
+        st.write(f"Accuracy: {accuracy}")
+        st.write(f"Classification Report:\n{report}")
 
 if __name__ == "__main__":
     main()
