@@ -21,12 +21,24 @@ def load_data():
     return pd.read_csv("WELFAKE_Dataset.csv", encoding='ISO-8859-1')
 
 # Preprocess the data
+# Preprocess the data
 def preprocess_data(data):
+    # Fill missing values with empty strings
+    data['title'] = data['title'].fillna('')
+    data['text'] = data['text'].fillna('')
+    
+    # Convert to lowercase
     data['title'] = data['title'].str.lower()
     data['text'] = data['text'].str.lower()
+    
+    # Combine 'title' and 'text' columns
     data['transformed_text'] = data['title'] + ' ' + data['text']
+    
+    # Apply text transformation
     data['transformed_text'] = data['transformed_text'].apply(transform_text)
+    
     return data
+
 
 # Text preprocessing function
 def transform_text(text):
