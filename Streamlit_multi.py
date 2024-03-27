@@ -113,8 +113,7 @@ def main():
     st.pyplot()
 
 # Load data
-@st.cache_resource
-@st.cache_data(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def load_data():
     return pd.read_csv("WELFAKE_Dataset.csv", encoding='ISO-8859-1')
 
