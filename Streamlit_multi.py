@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
@@ -11,7 +10,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
-import string
+import string as str
 
 
 # Load the dataset
