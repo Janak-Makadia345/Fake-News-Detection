@@ -13,6 +13,7 @@ import seaborn as sns
 import string
 
 # Load the dataset
+@st.cache_resource
 @st.cache_data
 def load_data():
     return pd.read_csv("WELFAKE_Dataset.csv", encoding='ISO-8859-1')
@@ -112,7 +113,8 @@ def main():
     st.pyplot()
 
 # Load data
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
+@st.cache_data(allow_output_mutation=True)
 def load_data():
     return pd.read_csv("WELFAKE_Dataset.csv", encoding='ISO-8859-1')
 
