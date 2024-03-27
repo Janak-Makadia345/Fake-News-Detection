@@ -15,7 +15,7 @@ import seaborn as sns
 import string
 
 # Load the dataset
-@st.cache
+@st.cache_data
 def load_data():
     return pd.read_csv("WELFAKE_Dataset.csv", encoding='ISO-8859-1')
 
