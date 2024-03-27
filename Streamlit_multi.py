@@ -46,12 +46,12 @@ def main():
     st.title("Fake News Detection")
 
     # Load data
-    data = load_data()
-    data = preprocess_data(data)
+    df = load_data()  # Change 'data' to 'df'
+    df = preprocess_data(df)  # Change 'data' to 'df'
 
     # Split data
-    X = data['transformed_text']
-    y = data['label']
+    X = df['transformed_text']  # Change 'data' to 'df'
+    y = df['label']  # Change 'data' to 'df'
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 
     # Train the model
