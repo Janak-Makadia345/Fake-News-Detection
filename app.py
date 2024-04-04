@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 import string
 import joblib
 import numpy as np
-from tensorflow import load_model
+from tensorflow.keras.models import load_model
 
 
 # Load the models from the pkl file
